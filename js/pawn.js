@@ -1,7 +1,12 @@
-import {tblEl, tbodylEl, findCell, findRow} from "./main.js";
+import {tblEl, tbodylEl, blackTurn, whiteTurn, findCell, findRow, move} from "./main.js";
 
 let rowIndex;
 let cellIndex;
+
+let td = [];
+
+let tdMov = [];
+let tdCut = [];
 
 tbodylEl.on('mousedown', '.piece .pawn', (eventData) => {
     let cutRowIndex;
@@ -14,7 +19,7 @@ tbodylEl.on('mousedown', '.piece .pawn', (eventData) => {
 
     cellIndex = findCell(targetEl);
     rowIndex = findRow(targetEl);
-    if (/pawn/.test(classname) ) {
+    if (/pawn/.test(classname) && blackTurn) {
         if (/black/.test(classname)) {
 
             //find positions of cells
@@ -35,7 +40,7 @@ tbodylEl.on('mousedown', '.piece .pawn', (eventData) => {
                 newRowIndex = [rowIndex + 1];
             }
         }
-    } else if (/pawn/.test(classname) ) {
+    } else if (/pawn/.test(classname) && whiteTurn) {
         if (/white/.test(classname)) {
 
             if (cellIndex === 0) {
@@ -58,221 +63,72 @@ tbodylEl.on('mousedown', '.piece .pawn', (eventData) => {
     }
 
 
-    if (newRowIndex?.length>0 && newCellIndex?.length >= 0) {
+    if (newRowIndex?.length > 0 && newCellIndex?.length >= 0) {
         applyMovable(newRowIndex, newCellIndex);
-
     }
-    if (cutRowIndex?.length>0 && cutCellIndex?.length>0) {
-        // if (showCutSpots(cutRowIndex, cutCellIndex)) {
+    if (cutRowIndex?.length > 0 && cutCellIndex?.length > 0) {
         showCutSpots(cutRowIndex, cutCellIndex);
-            // console.log("Before cutting");
-            applyCutMoves(cutRowIndex, cutCellIndex);
-        // }
     }
-    // console.log("Cut cell index= ", cutCellIndex);
+
 });
 
-tbodylEl.on('mouseup', '.piece', (eventData) => {
-    const targetEl = $(eventData.target);
-    cellIndex = findCell(targetEl);
-    rowIndex = findRow(targetEl);
-    let classname = targetEl[0].className;
+tbodylEl.on('mouseup', '.piece .pawn', (eventData) => {
 
-    let droppableCellIndex = [cellIndex];
-    let droppableRowIndex;
+    td.push(...tdMov, ...tdCut);
 
-    //find cutting positions
-    let cutCellIndex;
-    if (cellIndex === 0) {
-        cutCellIndex = [cellIndex + 1];
-    } else if (cellIndex > 0 && cellIndex < 7) {
-        cutCellIndex = [(cellIndex + 1), (cellIndex - 1)];
-    } else if (cellIndex === 7) {
-        cutCellIndex = [cellIndex - 1];
-    }
-
-    let cutRowIndex;
-
-    if (/pawn/.test(classname) ) {
-        // console.log("Class name matching=",classname.match("black"));
-        if (/black/.test(classname)) {
-            if (classname.match('first')) {
-                droppableRowIndex = [(rowIndex + 1), (rowIndex + 2)];
-            } else {
-                droppableRowIndex = [rowIndex + 1];
+    td.forEach(el => {
+        setTimeout(() => {
+            if ($(el).hasClass('spot')) {
+                $(el).removeClass('spot');
             }
-
-            cutRowIndex = [rowIndex + 1];
-        }
-    } else if (/pawn/.test(classname)) {
-        // console.log("Class name matching=",classname.match("white"));
-        if (/white/.test(classname)) {
-            if (classname.match('first')) {
-                droppableRowIndex = [(rowIndex - 1), (rowIndex - 2)];
-            } else {
-                droppableRowIndex = [rowIndex - 1];
+            if ($(el).hasClass('cut')) {
+                $(el).removeClass('cut');
             }
-            cutRowIndex = [rowIndex - 1];
-        }
-    }
-    setTimeout(() => {
-        if (droppableCellIndex?.length > 0 && droppableRowIndex?.length > 0) {
-            removeDroppable(droppableRowIndex, droppableCellIndex);
-        }
-    }, 0);
-
-    setTimeout(() => {
-        if (cutRowIndex?.length > 0 && cutCellIndex?.length > 0) {
-            removeCutSpots(cutRowIndex, cutCellIndex);
-        }
-    }, 0);
+            if ($(el).hasClass('ui-droppable')) {
+                el.droppable('destroy');
+            }
+        }, 0);
+    });
 
 });
 
 function applyMovable(rows, cell) {
+    let tdElm;
     for (let i = 0; i < rows.length; i++) {
         for (let j = 0; j < cell.length; j++) {
-            let tdElm = tblEl.find(`tr:nth-child(${rows[i] + 1})`).find(`td:nth-child(${cell[j] + 1})`);
+            tdElm = tblEl.find(`tr:nth-child(${rows[i] + 1})`).find(`td:nth-child(${cell[j] + 1})`);
             if (tdElm.hasClass('empty')) {
                 tdElm.addClass('spot');
-                tdElm.droppable({
-                    drop: function (event, ui) {
-                        ui.draggable.parent().removeClass('piece');
-                        ui.draggable.parent().addClass('empty');
-                        let spanEl = ui.draggable.parent().children('.pawn');
-                        // console.log(spanEl);
+                tdMov.push(tdElm);
 
-                        $(this).append(spanEl);
-                        $(this).addClass('piece');
-                        $(this).find('span').removeClass('first');
-                        $(this).removeClass('empty');
-                        spanEl.css('position', 'relative');
-                        spanEl.css('left', '0');
-                        spanEl.css('right', '0');
-                        spanEl.css('top', '0');
-                        spanEl.css('bottom', '0');
-                        spanEl.css('margin', 'auto');
-
-                    }
-                });
+                if (blackTurn) {
+                    move(tdMov,'pawn','black');
+                }
+                if (whiteTurn) {
+                    move(tdMov,'pawn','white');
+                }
             }
         }
     }
 }
 
-function applyCutMoves(row, cell) {
-    for (let i = 0; i < row.length; i++) {
-        for (let j = 0; j < cell.length; j++) {
-            let tdElm = tblEl.find(`tr:nth-child(${row[i] + 1})`).find(`td:nth-child(${cell[j] + 1})`);
-            if (tdElm.hasClass('cut')) {
-                tdElm.droppable({
-                    drop: function (event, ui) {
-                        ui.draggable.parent().removeClass('piece');
-                        ui.draggable.parent().addClass('empty');
-                        let spanEl = ui.draggable.parent().children('.pawn');
-
-                        // make cut moves correctly
-                        $(this).empty();
-                        $(this).append(spanEl);
-                        $(this).addClass('piece');
-                        $(this).find('span').removeClass('first');
-                        $(this).removeClass('empty');
-                        spanEl.css('position', 'relative');
-                        spanEl.css('left', '0');
-                        spanEl.css('right', '0');
-                        spanEl.css('top', '0');
-                        spanEl.css('bottom', '0');
-                        spanEl.css('margin', 'auto');
-                    }
-                });
-            }
-        }
-    }
-}
-
-function removeDroppable(row, cell) {
-    for (let i = 0; i < row.length; i++) {
-        for (let j = 0; j < cell.length; j++) {
-            let tdElm = tblEl.find(`tr:nth-child(${row[i] + 1})`).find(`td:nth-child(${cell[j] + 1})`);
-            // console.log(tblEl);
-            if (tdElm.hasClass('spot')) {
-                setTimeout(() => {
-                    tdElm.removeClass('spot');
-                    tdElm.droppable('destroy');
-                }, 0);
-            }
-            else if (tdElm.hasClass('cut')) {
-                setTimeout(() => {
-                    tdElm.removeClass('cut');
-                    tdElm.droppable('destroy');
-
-                }, 0);
-            }
-        }
-    }
-}
 
 function showCutSpots(rows, cells) {
+    let tdElm;
     for (let i = 0; i < rows.length; i++) {
         for (let j = 0; j < cells.length; j++) {
-            let tdElm = tblEl.find(`tr:nth-child(${rows[i] + 1})`).find(`td:nth-child(${cells[j] + 1})`);
+            tdElm = tblEl.find(`tr:nth-child(${rows[i] + 1})`).find(`td:nth-child(${cells[j] + 1})`);
             const whitePiece = tdElm.find('.white');
             const blackPiece = tdElm.find('.black');
-            if (tdElm.hasClass('piece') && $(whitePiece).hasClass('white')) {
+            if (tdElm.hasClass('piece') && blackTurn && $(whitePiece).hasClass('white')) {
                 tdElm.addClass('cut');
-                tdElm.droppable({
-                    drop: function (event, ui) {
-                        ui.draggable.parent().removeClass('piece');
-                        ui.draggable.parent().addClass('empty');
-                        let spanEl = ui.draggable.parent().children('.pawn');
-                        // $(this).append(spanEl);
-                        $(this).addClass('piece');
-                        $(this).find('span').removeClass('first');
-                        $(this).removeClass('empty');
-                        spanEl.css('position', 'relative');
-                        spanEl.css('left', '0');
-                        spanEl.css('right', '0');
-                        spanEl.css('top', '0');
-                        spanEl.css('bottom', '0');
-                        spanEl.css('margin', 'auto');
-                    }
-                });
+                tdCut.push(tdElm);
+                move(tdCut,'pawn','black');
 
-            } else if (tdElm.hasClass('piece')  && $(blackPiece).hasClass('black')) {
+            } else if (tdElm.hasClass('piece') && whiteTurn && $(blackPiece).hasClass('black')) {
                 tdElm.addClass('cut');
-                tdElm.droppable({
-                    drop: function (event, ui) {
-                        ui.draggable.parent().removeClass('piece');
-                        ui.draggable.parent().addClass('empty');
-                        let spanEl = ui.draggable.parent().children('.pawn');
-                        // $(this).append(spanEl);
-                        $(this).addClass('piece');
-                        $(this).find('span').removeClass('first');
-                        $(this).removeClass('empty');
-                        spanEl.css('position', 'relative');
-                        spanEl.css('left', '0');
-                        spanEl.css('right', '0');
-                        spanEl.css('top', '0');
-                        spanEl.css('bottom', '0');
-                        spanEl.css('margin', 'auto');
-                    }
-                });
-            }
-        }
-    }
-}
-
-function removeCutSpots(rows, cells) {
-    for (let i = 0; i < rows.length; i++) {
-        for (let j = 0; j < cells.length; j++) {
-            let tdElm = tblEl.find(`tr:nth-child(${rows[i] + 1})`).find(`td:nth-child(${cells[j] + 1})`);
-
-            if (tdElm.hasClass('cut')) {
-                setTimeout(() => {
-                    tdElm.droppable('destroy');
-                    // console.log("Removing Cut class");
-                    tdElm.removeClass('cut');
-                }, 0);
+                tdCut.push(tdElm);
+                move(tdCut,'pawn','white');
             }
         }
     }

@@ -1,4 +1,4 @@
-export {blackTurn, whiteTurn, tblEl, tbodylEl,findRow, findCell};
+export {blackTurn, whiteTurn, tblEl, tbodylEl, move,findRow, findCell, alreadyMoved};
 
 const tblEl = $('table');
 
@@ -51,7 +51,15 @@ $(firstWhiteRow.find('td')).each((i, elm) => {
 
 
 /* Functions */
-
+function alreadyMoved(turn) {
+    if (turn ==='white') {
+        whiteTurn = false;
+        blackTurn = true;
+    } else if (turn==='black') {
+        whiteTurn = true;
+        blackTurn = false;
+    }
+}
 function findCell(targetEl) {
 
     if (!($(targetEl.parent()).is('td'))) {
@@ -64,6 +72,8 @@ function findRow(targetEl) {
     return targetEl.parents('tr')[0].rowIndex;
 }
 
+
+
 /* creating top, bottom div */
 topDiv = $(`<div></div>`);
 topDiv.addClass('top elmCollector');
@@ -75,7 +85,49 @@ tblEl.after(bottomDiv);
 
 
 
+function move(tdElms,characterClass,color) {
+    tdElms.forEach(tdElm => {
+        let removedWhiteElm = null;
+        let removedBlackElm = null;
+        $(tdElm).droppable({
+            drop: function (event, ui) {
+                ui.draggable.parent().removeClass(`piece ${characterClass}`);
+                ui.draggable.parent().addClass('empty');
+
+                let spanEl = ui.draggable.parent().children(`.${characterClass}`);
+
+                // $(this).empty();
+                if (color === 'black') {
+                    removedWhiteElm = $(this).find('span');
+                    // console.log(removedWhiteElm);
+                    if ($(removedWhiteElm).hasClass('white')) {
+                        topDiv?.append(removedWhiteElm);
+                    }
+                }
+
+                if (color === 'white') {
+                    removedBlackElm = $(this).find('span');
+                    // console.log(removedBlackElm);
+                    if ($(removedBlackElm).hasClass('black')) {
+                        bottomDiv?.append(removedBlackElm);
+                    }
+                }
 
 
+                $(this).append(spanEl);
+                $(this).addClass('piece');
+                $(this).removeClass('empty');
+                spanEl.css('position', 'relative');
+                spanEl.css('left', '0');
+                spanEl.css('right', '0');
+                spanEl.css('top', '0');
+                spanEl.css('bottom', '0');
+                spanEl.css('margin', 'auto');
+                // console.log("dropped");
+                alreadyMoved(color);
 
+            }
+        });
+    });
+}
 
