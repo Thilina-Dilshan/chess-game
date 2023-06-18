@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Game</title>
+    <link rel="stylesheet" href="node_modules/normalize.css/normalize.css">
+    <link rel="stylesheet" href="node_modules/jquery-ui/dist/themes/base/jquery-ui.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script defer src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script defer src="node_modules/jquery-ui/dist/jquery-ui.min.js"></script>
+    <script defer type="module" src="/js/main.js"></script>
+    <script defer type="module" src="/js/pawn.js"></script>
+
+    <table style="text-align:center;border-spacing:0pt;font-family:'Arial Unicode MS'; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 0pt">
+        <tbody>
+        <tr id="first-black-row">
+            <td style="width:12pt">8
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 1pt">
+                <span class="rook black" style="font-size:150%;">♜</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 0pt"
+                bgcolor="lightgrey"><span class="black knight" style="font-size:150%;">♞</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 0pt">
+                <span class="bishop black" style="font-size:150%;">♝</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 0pt"
+                bgcolor="lightgrey"><span class="queen black" style="font-size:150%;">♛</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 0pt">
+                <span class="king black" style="font-size:150%;">♚</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 0pt"
+                bgcolor="lightgrey"><span class="bishop black" style="font-size:150%;">♝</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 0pt">
+                <span class="knight black" style="font-size:150%;">♞</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 1pt 0pt 0pt"
+                bgcolor="lightgrey"><span class="rook black" style="font-size:150%;">♜</span>
+            </td>
+        </tr>
+        <tr id="second-black-row">
+            <td style="width:12pt">7
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 1pt"
+                bgcolor="lightgrey"><span class="pawn black" style="font-size:150%;">♟︎</span>
+            </td>
+            <td style="width:24pt; height:24pt;"><span class="pawn black" style="font-size:150%;">♟︎</span>
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey"><span class="pawn black"
+                                                                           style="font-size:150%;">♟︎</span>
+            </td>
+            <td style="width:24pt; height:24pt;"><span class="pawn black" style="font-size:150%;">♟︎</span>
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey"><span class="pawn black"
+                                                                           style="font-size:150%;">♟︎</span>
+            </td>
+            <td style="width:24pt; height:24pt;"><span class="pawn black" style="font-size:150%;">♟︎</span>
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey"><span class="pawn black"
+                                                                           style="font-size:150%;">♟︎</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 0pt 0pt">
+                <span class="pawn black" style="font-size:150%;">♟︎</span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:12pt">6
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 1pt">
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt;">
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt;">
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt;">
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 0pt 0pt"
+                bgcolor="lightgrey">
+            </td>
+        </tr>
+        <tr>
+            <td style="width:12pt">5
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 1pt"
+                bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt;">
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt;">
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt;">
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 0pt 0pt">
+            </td>
+        </tr>
+        <tr>
+            <td style="width:12pt">4
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 1pt">
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt;">
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt;">
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt;">
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 0pt 0pt"
+                bgcolor="lightgrey">
+            </td>
+        </tr>
+        <tr>
+            <td style="width:12pt">3
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 1pt"
+                bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt;">
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt;">
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt;">
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey">
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 0pt 0pt">
+            </td>
+        </tr>
+        <tr id="second-white-row">
+            <td style="width:12pt">2
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 1pt">
+                <span class="pawn white" style="font-size:150%;">♙</span>
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey"><span class="pawn white"
+                                                                           style="font-size:150%;">♙</span>
+            </td>
+            <td style="width:24pt; height:24pt;"><span class="pawn white" style="font-size:150%;">♙</span>
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey"><span class="pawn white"
+                                                                           style="font-size:150%;">♙</span>
+            </td>
+            <td style="width:24pt; height:24pt;"><span class="pawn white" style="font-size:150%;">♙</span>
+            </td>
+            <td style="width:24pt; height:24pt;" bgcolor="lightgrey"><span class="pawn white"
+                                                                           style="font-size:150%;">♙</span>
+            </td>
+            <td style="width:24pt; height:24pt;"><span class="pawn white" style="font-size:150%;">♙</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 0pt 0pt"
+                bgcolor="lightgrey"><span class="pawn white" style="font-size:150%;">♙</span>
+            </td>
+        </tr>
+        <tr id="first-white-row">
+            <td style="width:12pt">1
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 1pt"
+                bgcolor="lightgrey"><span class="rook white" style="font-size:150%;">♖</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 0pt">
+                <span class="knight white" style="font-size:150%;">♘</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 0pt"
+                bgcolor="lightgrey"><span class="bishop white" style="font-size:150%;">♗</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 0pt">
+                <span class="queen white" style="font-size:150%;">♕</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 0pt"
+                bgcolor="lightgrey"><span class="king white" style="font-size:150%;">♔</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 0pt">
+                <span class="bishop white" style="font-size:150%;">♗</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 0pt"
+                bgcolor="lightgrey"><span class="knight white" style="font-size:150%;">♘</span>
+            </td>
+            <td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 1pt 0pt">
+                <span class="rook white" style="font-size:150%;">♖</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>a
+            </td>
+            <td>b
+            </td>
+            <td>c
+            </td>
+            <td>d
+            </td>
+            <td>e
+            </td>
+            <td>f
+            </td>
+            <td>g
+            </td>
+            <td>h
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</head>
+<body>
+
+</body>
+</html>
