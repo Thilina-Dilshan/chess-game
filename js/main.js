@@ -72,8 +72,6 @@ function findRow(targetEl) {
     return targetEl.parents('tr')[0].rowIndex;
 }
 
-
-
 /* creating top, bottom div */
 topDiv = $(`<div></div>`);
 topDiv.addClass('top elmCollector');
@@ -82,7 +80,6 @@ tblEl.before(topDiv);
 bottomDiv = $(`<div></div>`);
 bottomDiv.addClass('bottom elmCollector');
 tblEl.after(bottomDiv);
-
 
 
 function move(tdElms,characterClass,color) {
@@ -112,7 +109,6 @@ function move(tdElms,characterClass,color) {
                         bottomDiv?.append(removedBlackElm);
                     }
                 }
-
 
                 $(this).append(spanEl);
                 $(this).addClass('piece');

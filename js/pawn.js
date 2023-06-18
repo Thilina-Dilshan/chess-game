@@ -3,7 +3,7 @@ import {tblEl, tbodylEl, blackTurn, whiteTurn, findCell, findRow, move} from "./
 let rowIndex;
 let cellIndex;
 
-let td = [];
+let tdPawn = [];
 
 let tdMov = [];
 let tdCut = [];
@@ -74,9 +74,9 @@ tbodylEl.on('mousedown', '.piece .pawn', (eventData) => {
 
 tbodylEl.on('mouseup', '.piece .pawn', (eventData) => {
 
-    td.push(...tdMov, ...tdCut);
-
-    td.forEach(el => {
+    tdPawn.push(...tdMov, ...tdCut);
+    tdPawn.forEach(el => {
+        console.log(el);
         setTimeout(() => {
             if ($(el).hasClass('spot')) {
                 $(el).removeClass('spot');
@@ -89,7 +89,9 @@ tbodylEl.on('mouseup', '.piece .pawn', (eventData) => {
             }
         }, 0);
     });
-
+    tdPawn = [];
+    tdMov = [];
+    tdCut = [];
 });
 
 function applyMovable(rows, cell) {
