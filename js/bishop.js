@@ -4,26 +4,25 @@ let rowIndex;
 let cellIndex;
 
 let mouseDownTar;
-let td = [];
-
+let tdBishop = [];
+let bishop = false;
 
 tbodylEl.on('mousedown', '.piece .bishop', (eventData) => {
     let newCellIndex;
+    bishop = true;
 
-    const targetEl = $(eventData.target);
+    let targetEl = $(eventData.target);
     let classname = targetEl[0].className;
 
     mouseDownTar = targetEl;
-
+    console.log("MouseDown", mouseDownTar);
     cellIndex = findCell(targetEl);
     rowIndex = findRow(targetEl);
 
-    console.log(rowIndex, cellIndex);
-
     if (/bishop/.test(classname) && /black/.test(classname) && blackTurn) {
         showAvailableSpots(rowIndex, cellIndex, "black");
-
     }
+
     if (/bishop/.test(classname) && /white/.test(classname) && whiteTurn) {
         showAvailableSpots(rowIndex,cellIndex, "white");
 
@@ -32,9 +31,10 @@ tbodylEl.on('mousedown', '.piece .bishop', (eventData) => {
 });
 
 
-tbodylEl.on('mouseup', 'td .bishop', (eventData) => {
-
-    td.forEach(el => {
+tbodylEl.on('mouseup', 'td', (eventData) => {
+    if (!bishop)return;
+    console.log("MouseUp", mouseDownTar);
+    tdBishop.forEach(el => {
         setTimeout(() => {
             if ($(el).hasClass('spot')) {
                 $(el).removeClass('spot');
@@ -47,74 +47,84 @@ tbodylEl.on('mouseup', 'td .bishop', (eventData) => {
             }
         }, 0);
     });
+    bishop = false;
+    tdBishop = [];
 });
 
 
 
 function showAvailableSpots(rowIndex, cellIndex, color) {
-    td = [];
+    tdBishop = [];
+
     let oppositeClass = color === 'black' ? 'white' : 'black'
-
-    for (let i = rowIndex, j = cellIndex; i <= 7, j <= 7; i++, j++) {
+    for (let i = rowIndex+1, j = cellIndex+1; i <= 7, j <= 7; i++, j++) {
         let tdElm1 = tblEl.find(`tr:nth-child(${i + 1})`).find(`td:nth-child(${j + 1})`);
-        if ($(tdElm1).hasClass('empty')) {
+
+        if (/^empty$/.test($(tdElm1).attr('class'))) {
             $(tdElm1).addClass('spot');
-            td.push(tdElm1);
+            tdBishop.push(tdElm1);
 
-        } else if ($(tdElm1).hasClass('piece')) {
-            if ($(tdElm1).find('span').hasClass(`${oppositeClass}`)) {
+        } else if (/^piece$/.test($(tdElm1).attr('class'))) {
+            // console.log(oppositeClass);
+            // console.log($(tdElm1).find('span').hasClass(oppositeClass));
+            // console.log(/`${oppositeClass}`/.test($(tdElm1).find('span').attr('class')));
+            if ($(tdElm1).find('span').hasClass(oppositeClass)) {
                 $(tdElm1).addClass('cut');
-                td.push(tdElm1);
+                tdBishop.push(tdElm1);
             }
+            break;
         }
     }
 
-    for (let i = rowIndex, j = cellIndex; i <= 7, j >= 0; i++, j--) {
+    for (let i = rowIndex+1, j = cellIndex-1; i <= 7, j >= 0; i++, j--) {
         let tdElm2 = tblEl.find(`tr:nth-child(${i + 1})`).find(`td:nth-child(${j + 1})`);
-        if ($(tdElm2).hasClass('empty')) {
+        if (/^empty$/.test($(tdElm2).attr('class'))) {
             $(tdElm2).addClass('spot');
-            td.push(tdElm2);
+            tdBishop.push(tdElm2);
 
-        } else if ($(tdElm2).hasClass('piece')) {
-            if ($(tdElm2).find('span').hasClass(`${oppositeClass}`)) {
+        } else if (/^piece$/.test($(tdElm2).attr('class'))) {
+            if ($(tdElm2).find('span').hasClass(oppositeClass)) {
                 $(tdElm2).addClass('cut');
-                td.push(tdElm2);
+                tdBishop.push(tdElm2);
             }
+            break;
         }
 
     }
 
-    for (let i = rowIndex, j = cellIndex; i >= 0, j <= 7; i--, j++) {
+    for (let i = rowIndex-1, j = cellIndex+1; i >= 0, j <= 7; i--, j++) {
         let tdElm3 = tblEl.find(`tr:nth-child(${i + 1})`).find(`td:nth-child(${j + 1})`);
-        if ($(tdElm3).hasClass('empty')) {
+        if (/^empty$/.test($(tdElm3).attr('class'))) {
             $(tdElm3).addClass('spot');
-            td.push(tdElm3);
+            tdBishop.push(tdElm3);
 
-        } else if ($(tdElm3).hasClass('piece')) {
-            if ($(tdElm3).find('span').hasClass(`${oppositeClass}`)) {
+        } else if (/^piece$/.test($(tdElm3).attr('class'))) {
+            if ($(tdElm3).find('span').hasClass(oppositeClass)) {
                 $(tdElm3).addClass('cut');
-                td.push(tdElm3);
+                tdBishop.push(tdElm3);
             }
+            break;
         }
     }
 
-    for (let i = rowIndex, j = cellIndex; i >= 0, j >= 0; i--, j--) {
+    for (let i = rowIndex-1, j = cellIndex-1; i >= 0, j >= 0; i--, j--) {
         let tdElm4 = tblEl.find(`tr:nth-child(${i + 1})`).find(`td:nth-child(${j + 1})`);
-        if ($(tdElm4).hasClass('empty')) {
+        if (/^empty$/.test($(tdElm4).attr('class'))) {
             $(tdElm4).addClass('spot');
-            td.push(tdElm4);
+            tdBishop.push(tdElm4);
 
-        } else if ($(tdElm4).hasClass('piece')) {
-            if ($(tdElm4).find('span').hasClass(`${oppositeClass}`)) {
+        } else if (/^piece$/.test($(tdElm4).attr('class'))) {
+            if ($(tdElm4).find('span').hasClass(oppositeClass)) {
                 $(tdElm4).addClass('cut');
-                td.push(tdElm4);
+                tdBishop.push(tdElm4);
             }
+            break;
         }
     }
 
     setTimeout(() => {
-        if (td?.length > 0) {
-            move(td, 'bishop', color);
+        if (tdBishop?.length > 0) {
+            move(tdBishop, 'bishop', color);
         }
     }, 0);
 }

@@ -7,6 +7,7 @@ let mouseDownTar;
 
 let tdKnight = [];
 let knight = false;
+
 tbodylEl.on('mousedown', '.knight', (eventData) => {
     let newCellIndex;
     knight = true;

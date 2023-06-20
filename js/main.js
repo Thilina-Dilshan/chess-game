@@ -90,6 +90,8 @@ function move(tdElms,characterClass,color) {
             drop: function (event, ui) {
                 ui.draggable.parent().removeClass(`piece ${characterClass}`);
                 ui.draggable.parent().addClass('empty');
+                if(ui.draggable.hasClass('first')) $(ui.draggable).removeClass('first');
+                console.log(ui.draggable.hasClass('first'));
 
                 let spanEl = ui.draggable.parent().children(`.${characterClass}`);
 

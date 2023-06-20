@@ -76,7 +76,6 @@ tbodylEl.on('mouseup', '.piece .pawn', (eventData) => {
 
     tdPawn.push(...tdMov, ...tdCut);
     tdPawn.forEach(el => {
-        console.log(el);
         setTimeout(() => {
             if ($(el).hasClass('spot')) {
                 $(el).removeClass('spot');
