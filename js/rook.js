@@ -52,7 +52,6 @@ tbodylEl.on('mouseup', 'td', (eventData) => {
 });
 
 
-
 function showAvailableSpots(rowIndex, cellIndex, color) {
     tdRook = [];
     let oppositeClass = color === 'black' ? 'white' : 'black'
