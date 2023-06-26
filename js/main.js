@@ -90,17 +90,26 @@ function move(tdElms,characterClass,color) {
             drop: function (event, ui) {
                 ui.draggable.parent().removeClass(`piece ${characterClass}`);
                 ui.draggable.parent().addClass('empty');
-                if(ui.draggable.hasClass('first')) $(ui.draggable).removeClass('first');
-                console.log(ui.draggable.hasClass('first'));
+                if (ui.draggable.hasClass('first')) $(ui.draggable).removeClass('first');
 
                 let spanEl = ui.draggable.parent().children(`.${characterClass}`);
 
+                // console.log(ui.draggable.parent().children(`.${characterClass}`));
                 // $(this).empty();
+
                 if (color === 'black') {
                     removedWhiteElm = $(this).find('span');
                     // console.log(removedWhiteElm);
+
                     if ($(removedWhiteElm).hasClass('white')) {
+
+                        /* Win Logics */
+                        if ($(removedWhiteElm).hasClass('king')) {
+                            alert("Congratulation..! Black Won!");
+                        }
+
                         topDiv?.append(removedWhiteElm);
+                        removedWhiteElm.addClass('removedElm');
                     }
                 }
 
@@ -108,7 +117,14 @@ function move(tdElms,characterClass,color) {
                     removedBlackElm = $(this).find('span');
                     // console.log(removedBlackElm);
                     if ($(removedBlackElm).hasClass('black')) {
+
+                        /* Win Logics */
+                        if ($(removedWhiteElm).hasClass('king')) {
+                            alert("Congratulation..! White Won!");
+                        }
+
                         bottomDiv?.append(removedBlackElm);
+                        removedBlackElm.addClass('removedElm');
                     }
                 }
 
