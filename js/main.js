@@ -145,3 +145,22 @@ function move(tdElms,characterClass,color) {
     });
 }
 
+topDiv.css('opacity', '0');
+bottomDiv.css('opacity', '0');
+
+topDiv.on("mouseleave", (evt) => {
+    $(evt.currentTarget).css('opacity', '0');
+
+});
+
+topDiv.on("mouseenter", (evt) => {
+    $(evt.currentTarget).css('opacity', '0.5');
+});
+
+bottomDiv.on("mouseleave", (evt) => {
+    $(evt.currentTarget).css('opacity', '0');
+});
+
+bottomDiv.on("mouseenter", (evt) => {
+    $(evt.currentTarget).css('opacity', '0.5');
+});
